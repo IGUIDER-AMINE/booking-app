@@ -8,6 +8,8 @@ const User = require("./models/User.js");
 const cookieParser = require("cookie-parser");
 const imageDownloader = require("image-downloader");
 const multer = require("multer");
+// rename files on the server
+const fs = require("fs");
 
 dotenv.config();
 const app = express();
@@ -107,15 +109,18 @@ app.post("/upload-by-link", async (req, res) => {
 // to do upload we use  package multer
 const photosMiddleware = multer({ dest: "uploads/" });
 app.post("/upload", photosMiddleware.array("photos", 100), async (req, res) => {
-  // const uploadedFiles = [];
-  // for (let i = 0; i < req.files.length; i++) {
-  //   const {path,originalname,mimetype} = req.files[i];
-  //   const url = await uploadToS3(path, originalname, mimetype);
-  //   uploadedFiles.push(url);
-  // }
-  console.log(req.files);
-  res.json(req.files);
+  const uploadedFiles = [];
+  for (let i = 0; i < req.files.length; i++) {
+    const { path, originalname } = req.files[i];
+    const parts = originalname.split(".");
+    const ext = parts[parts.length - 1];
+    const newPath = path + "." + ext;
+    fs.renameSync(path, newPath);
+    //http://127.0.0.1:4000/uploads/uploads/88715b3226c8ffe8f0bcdc10b422bdec.jpg
+    uploadedFiles.push(newPath.replace("uploads", ""));
+  }
+  res.json(uploadedFiles);
 });
 
 app.listen(4000);
-//03:02:09
+//03:40:03
