@@ -67,7 +67,7 @@ export default function PlacesFormPage() {
       checkIn,
       checkOut,
       maxGuests,
-      price,
+      // price,
     };
     if (id) {
       // update
