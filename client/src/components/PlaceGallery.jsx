@@ -28,12 +28,18 @@ export default function PlaceGallery({ place }) {
               Close photos
             </button>
           </div>
-          {place?.photos?.length > 0 &&
-            place.photos.map((photo) => (
-              <div>
-                <img src={"http://127.0.0.1:4000/uploads/" + photo} alt="" />
-              </div>
-            ))}
+          <div className="grid gap-6 place-content-center mt-4">
+            {place?.photos?.length > 0 &&
+              place.photos.map((photo) => (
+                <div className="">
+                  <img
+                    className=" w-full max-w-[600px]  object-cover"
+                    src={"http://127.0.0.1:4000/uploads/" + photo}
+                    alt=""
+                  />
+                </div>
+              ))}
+          </div>
         </div>
       </div>
     );
